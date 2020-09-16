@@ -1,7 +1,9 @@
-  
+
+var hnremoteform_source_fid='{$hnremoteform_source_fid}';
+{literal}
 var hnCreateFieldDiv = function hnCreateFieldDiv(key, def, type, createFieldFunc, wrapFieldFunc) {
   
-  if (key == 'custom_17') {
+  if (key == 'custom_'+ hnremoteform_source_fid) {
     def.default_value=window.location.href;
   }
   
@@ -11,8 +13,9 @@ var hnCreateFieldDiv = function hnCreateFieldDiv(key, def, type, createFieldFunc
   } 
   
   var div = wrapFieldFunc(key, def, field);
-  if (key == 'custom_17') {
-    div.style="border: 1px solid red;  x-display: none";
+  if (key == 'custom_' + hnremoteform_source_fid) {
+    div.style="border: 1px solid purple;  x-display: none";
   }
   return div;
 };
+{/literal}

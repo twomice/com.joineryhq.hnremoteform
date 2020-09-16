@@ -140,9 +140,7 @@ class CRM_Hnremoteform_Form_Settings extends CRM_Core_Form {
     }
   }
 
-  static function getSettings() {
-     fdafsd dsm(Civi::settings()->get('hnremoteform_source_fid'));
-     
+  static function getSettings() {     
     $settings =  _hnremoteform_civicrmapi('setting', 'getfields', array('filters' => self::$settingFilter));
     return $settings['values'];
   }

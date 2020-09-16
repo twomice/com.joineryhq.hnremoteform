@@ -11,7 +11,7 @@ function hnremoteform_civicrm_remoteform_extraJsParams(&$params) {
 }
 
 function hnremoteform_civicrm_remoteform_extraJsUrls(&$urls) {
-  $url = CRM_Core_Resources::singleton()->getUrl('com.joineryhq.hnremoteform', 'js/hnremoteform.js');
+  $url = CRM_Utils_System::url('civicrm/hnremoteform/remoteformjs', NULL, TRUE);
   $urls .= htmlentities('<script src="' . $url . '"></script>') . '<br />';
 }
 

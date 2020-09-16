@@ -6,4 +6,10 @@
     <title>Settings</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/hnremoteform/remoteformjs</path>
+    <page_callback>CRM_Hnremoteform_Page_Remoteformjs</page_callback>
+    <title>Remoteformjs</title>
+    <access_callback>1</access_callback>
+  </item>
 </menu>
