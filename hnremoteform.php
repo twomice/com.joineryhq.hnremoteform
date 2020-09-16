@@ -180,3 +180,32 @@ function hnremoteform_civicrm_themes(&$themes) {
 //  ));
 //  _hnremoteform_civix_navigationMenu($menu);
 //}
+
+/**
+ * Log CiviCRM API errors to CiviCRM log.
+ */
+function _hnremoteform_log_api_error(CiviCRM_API3_Exception $e, string $entity, string $action, array $params) {
+  $message = "CiviCRM API Error '{$entity}.{$action}': ". $e->getMessage() .'; ';
+  $message .= "API parameters when this error happened: ". json_encode($params) .'; ';
+  $bt = debug_backtrace();
+  $error_location = "{$bt[1]['file']}::{$bt[1]['line']}";
+  $message .= "Error API called from: $error_location";
+  CRM_Core_Error::debug_log_message($message);
+}
+
+/**
+ * CiviCRM API wrapper. Wraps with try/catch, redirects errors to log, saves
+ * typing.
+ */
+function _hnremoteform_civicrmapi(string $entity, string $action, array $params, bool $silence_errors = TRUE) {
+  try {
+    $result = civicrm_api3($entity, $action, $params);
+  } catch (CiviCRM_API3_Exception $e) {
+    _hnremoteform_log_api_error($e, $entity, $action, $params);
+    if (!$silence_errors) {
+      throw $e;
+    }
+  }
+
+  return $result;
+}
