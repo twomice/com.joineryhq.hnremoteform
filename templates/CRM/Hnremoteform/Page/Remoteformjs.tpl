@@ -1,5 +1,6 @@
 
 var hnremoteform_source_fid='{$hnremoteform_source_fid}';
+var hnremoteform_source_div_style='{$hnremoteform_source_div_style}';
 {literal}
 var hnCreateFieldDiv = function hnCreateFieldDiv(key, def, type, createFieldFunc, wrapFieldFunc) {
   
@@ -14,7 +15,7 @@ var hnCreateFieldDiv = function hnCreateFieldDiv(key, def, type, createFieldFunc
   
   var div = wrapFieldFunc(key, def, field);
   if (key == 'custom_' + hnremoteform_source_fid) {
-    div.style="border: 1px solid purple;  x-display: none";
+    div.style = hnremoteform_source_div_style;
   }
   return div;
 };
