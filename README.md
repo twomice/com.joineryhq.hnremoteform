@@ -9,7 +9,7 @@ The extension is licensed under [GPL-3.0](LICENSE.txt).
 
 ## Usage
 
-(* FIXME: Where would a new user navigate to get started? What changes would they see? *)
+Quick overview in video: https://youtu.be/QRRJ_-uNoA0
 
 ## Installation
 ### Web UI
