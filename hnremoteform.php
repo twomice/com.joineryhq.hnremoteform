@@ -6,13 +6,12 @@ use CRM_Hnremoteform_ExtensionUtil as E;
 // phpcs:enable
 
 
-function hnremoteform_civicrm_remoteform_extraJsParams(&$params) {
+function hnremoteform_civicrm_remoteform_extraJsParams($id, &$params) {
   $params .= htmlentities("createFieldDivFunc: hnCreateFieldDiv,") . '<br />';
 }
 
-function hnremoteform_civicrm_remoteform_extraJsUrls(&$urls) {
-  $url = CRM_Utils_System::url('civicrm/hnremoteform/remoteformjs', NULL, TRUE);
-  $urls .= htmlentities('<script src="' . $url . '"></script>') . '<br />';
+function hnremoteform_civicrm_remoteform_extraJsUrls($id, &$urls) {
+  $urls[] = CRM_Utils_System::url('civicrm/hnremoteform/remoteformjs', NULL, TRUE, NULL, NULL, TRUE);
 }
 
 /**
@@ -167,19 +166,21 @@ function hnremoteform_civicrm_themes(&$themes) {
 /**
  * Implements hook_civicrm_navigationMenu().
  *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_navigationMenu
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_navigationMenu
  */
-//function hnremoteform_civicrm_navigationMenu(&$menu) {
-//  _hnremoteform_civix_insert_navigation_menu($menu, 'Mailings', array(
-//    'label' => E::ts('New subliminal message'),
-//    'name' => 'mailing_subliminal_message',
-//    'url' => 'civicrm/mailing/subliminal',
-//    'permission' => 'access CiviMail',
-//    'operator' => 'OR',
-//    'separator' => 0,
-//  ));
-//  _hnremoteform_civix_navigationMenu($menu);
-//}
+function hnremoteform_civicrm_navigationMenu(&$menu) {
+//  _hnremoteform_get_max_navID($menu, $max_navID);
+  _hnremoteform_civix_insert_navigation_menu($menu, 'Administer/Customize Data and Screens', array(
+    'label' => E::ts('Remote Forms: Hear Nebraska'),
+    'name' => 'Remote Forms: Hear Nebraska',
+    'url' => 'civicrm/admin/hnremoteform/settings',
+    'permission' => 'administer CiviCRM',
+    'operator' => 'AND',
+    'separator' => NULL,
+//    'navID' => ++$max_navID,
+  ));
+  _hnremoteform_civix_navigationMenu($menu);
+}
 
 /**
  * Log CiviCRM API errors to CiviCRM log.
