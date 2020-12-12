@@ -11,12 +11,12 @@ require_once 'CRM/Core/Form.php';
  */
 class CRM_Hnremoteform_Form_Settings extends CRM_Core_Form {
 
-  static $settingFilter = array('group' => 'hnremoteform');
-  static $extensionName = 'com.joineryhq.hnremoteform';
+  public static $settingFilter = array('group' => 'hnremoteform');
+  public static $extensionName = 'com.joineryhq.hnremoteform';
   private $_submittedValues = array();
   private $_settings = array();
 
-  function __construct(
+  public function __construct(
     $state = NULL,
     $action = CRM_Core_Action::NONE,
     $method = 'post',
@@ -32,35 +32,46 @@ class CRM_Hnremoteform_Form_Settings extends CRM_Core_Form {
       $name = NULL
     );
   }
-  function buildQuickForm() {
+
+  public function buildQuickForm() {
     $settings = $this->_settings;
     foreach ($settings as $name => $setting) {
       if (isset($setting['quick_form_type'])) {
-        switch($setting['html_type']) {
+        switch ($setting['html_type']) {
           case 'Select':
             $this->add(
-              $setting['html_type'], // field type
-              $setting['name'], // field name
-              $setting['title'], // field label
+              // field type
+              $setting['html_type'],
+              // field name
+              $setting['name'],
+              // field label
+              $setting['title'],
               $this->getSettingOptions($setting),
               NULL,
               $setting['html_attributes']
             );
             break;
+
           case 'CheckBox':
             $this->addCheckBox(
-              $setting['name'], // field name
-              $setting['title'], // field label
+              // field name
+              $setting['name'],
+              // field label
+              $setting['title'],
               array_flip($this->getSettingOptions($setting))
             );
             break;
+
           case 'Radio':
             $this->addRadio(
-              $setting['name'], // field name
-              $setting['title'], // field label
+              // field name
+              $setting['name'],
+              // field label
+              $setting['title'],
               $this->getSettingOptions($setting)
             );
             break;
+
           default:
             $add = 'add' . $setting['quick_form_type'];
             if ($add == 'addElement') {
@@ -75,7 +86,7 @@ class CRM_Hnremoteform_Form_Settings extends CRM_Core_Form {
       $descriptions[$setting['name']] = E::ts($setting['description']);
 
       if (!empty($setting['X_form_rules_args'])) {
-        $rules_args = (array)$setting['X_form_rules_args'];
+        $rules_args = (array) $setting['X_form_rules_args'];
         foreach ($rules_args as $rule_args) {
           array_unshift($rule_args, $setting['name']);
           call_user_func_array(array($this, 'addRule'), $rule_args);
@@ -85,11 +96,11 @@ class CRM_Hnremoteform_Form_Settings extends CRM_Core_Form {
     $this->assign("descriptions", $descriptions);
 
     $this->addButtons(array(
-      array (
+      array(
         'type' => 'submit',
         'name' => E::ts('Submit'),
         'isDefault' => TRUE,
-      )
+      ),
     ));
 
     $style_path = CRM_Core_Resources::singleton()->getPath(self::$extensionName, 'css/extension.css');
@@ -102,7 +113,7 @@ class CRM_Hnremoteform_Form_Settings extends CRM_Core_Form {
     parent::buildQuickForm();
   }
 
-  function postProcess() {
+  public function postProcess() {
     $this->_submittedValues = $this->exportValues();
     $this->saveSettings();
     CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/admin/hnremoteform/settings', 'reset=1'));
@@ -114,7 +125,7 @@ class CRM_Hnremoteform_Form_Settings extends CRM_Core_Form {
    *
    * @return array (string)
    */
-  function getRenderableElementNames() {
+  public function getRenderableElementNames() {
     // The _elements list includes some items which should not be
     // auto-rendered in the loop -- such as "qfKey" and "buttons". These
     // items don't have labels. We'll identify renderable by filtering on
@@ -132,25 +143,23 @@ class CRM_Hnremoteform_Form_Settings extends CRM_Core_Form {
   /**
    * Define the list of settings we are going to allow to be set on this form.
    *
-   * @return array
    */
-  function setSettings() {
+  public function setSettings() {
     if (empty($this->_settings)) {
       $this->_settings = self::getSettings();
     }
   }
 
-  static function getSettings() {     
-    $settings =  _hnremoteform_civicrmapi('setting', 'getfields', array('filters' => self::$settingFilter));
+  public static function getSettings() {
+    $settings = _hnremoteform_civicrmapi('setting', 'getfields', array('filters' => self::$settingFilter));
     return $settings['values'];
   }
 
   /**
    * Get the settings we are going to allow to be set on this form.
    *
-   * @return array
    */
-  function saveSettings() {
+  public function saveSettings() {
     $settings = $this->_settings;
     $values = array_intersect_key($this->_submittedValues, $settings);
     _hnremoteform_civicrmapi('setting', 'create', $values);
@@ -167,7 +176,7 @@ class CRM_Hnremoteform_Form_Settings extends CRM_Core_Form {
    *
    * @see CRM_Core_Form::setDefaultValues()
    */
-  function setDefaultValues() {
+  public function setDefaultValues() {
     $result = _hnremoteform_civicrmapi('setting', 'get', array('return' => array_keys($this->_settings)));
     $domainID = CRM_Core_Config::domainID();
     $ret = CRM_Utils_Array::value($domainID, $result['values']);
@@ -176,16 +185,16 @@ class CRM_Hnremoteform_Form_Settings extends CRM_Core_Form {
 
   public static function getCustomFieldOptions() {
     $options = array();
-    $options = array(0 => '- '. E::ts('none') . ' -');
+    $options = array(0 => '- ' . E::ts('none') . ' -');
     $result = _hnremoteform_civicrmapi('CustomGroup', 'get', [
       'extends' => "contribution",
       'api.CustomField.get' => [
-        'sequential' => 0, 
+        'sequential' => 0,
         'html_type' => 'Text',
         'options' => [
-          'limit' => 0, 
+          'limit' => 0,
           'sort' => "label",
-        ], 
+        ],
       ],
       'options' => ['limit' => 0, 'sort' => "title"],
     ]);
@@ -206,5 +215,5 @@ class CRM_Hnremoteform_Form_Settings extends CRM_Core_Form {
       return CRM_Utils_Array::value('X_options', $setting, array());
     }
   }
-}
 
+}
