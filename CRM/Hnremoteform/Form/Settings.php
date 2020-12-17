@@ -1,6 +1,7 @@
 <?php
 
 require_once 'CRM/Core/Form.php';
+use CRM_Hnremoteform_ExtensionUtil as E;
 
 /**
  * Form controller class for extension Settings form.
