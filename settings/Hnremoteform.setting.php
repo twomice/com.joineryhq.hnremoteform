@@ -36,4 +36,4 @@ return array(
     'default' => 0,
     'html_type' => 'radio',
   ),
- );
+);

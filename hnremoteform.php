@@ -169,7 +169,7 @@ function hnremoteform_civicrm_themes(&$themes) {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_navigationMenu
  */
 function hnremoteform_civicrm_navigationMenu(&$menu) {
-//  _hnremoteform_get_max_navID($menu, $max_navID);
+  //_hnremoteform_get_max_navID($menu, $max_navID);
   _hnremoteform_civix_insert_navigation_menu($menu, 'Administer/Customize Data and Screens', array(
     'label' => E::ts('Remote Forms: Hear Nebraska'),
     'name' => 'Remote Forms: Hear Nebraska',
@@ -177,7 +177,7 @@ function hnremoteform_civicrm_navigationMenu(&$menu) {
     'permission' => 'administer CiviCRM',
     'operator' => 'AND',
     'separator' => NULL,
-//    'navID' => ++$max_navID,
+    //'navID' => ++$max_navID,
   ));
   _hnremoteform_civix_navigationMenu($menu);
 }
@@ -186,8 +186,8 @@ function hnremoteform_civicrm_navigationMenu(&$menu) {
  * Log CiviCRM API errors to CiviCRM log.
  */
 function _hnremoteform_log_api_error(CiviCRM_API3_Exception $e, string $entity, string $action, array $params) {
-  $message = "CiviCRM API Error '{$entity}.{$action}': ". $e->getMessage() .'; ';
-  $message .= "API parameters when this error happened: ". json_encode($params) .'; ';
+  $message = "CiviCRM API Error '{$entity}.{$action}': " . $e->getMessage() . '; ';
+  $message .= "API parameters when this error happened: " . json_encode($params) . '; ';
   $bt = debug_backtrace();
   $error_location = "{$bt[1]['file']}::{$bt[1]['line']}";
   $message .= "Error API called from: $error_location";
@@ -201,7 +201,8 @@ function _hnremoteform_log_api_error(CiviCRM_API3_Exception $e, string $entity, 
 function _hnremoteform_civicrmapi(string $entity, string $action, array $params, bool $silence_errors = TRUE) {
   try {
     $result = civicrm_api3($entity, $action, $params);
-  } catch (CiviCRM_API3_Exception $e) {
+  }
+  catch (CiviCRM_API3_Exception $e) {
     _hnremoteform_log_api_error($e, $entity, $action, $params);
     if (!$silence_errors) {
       throw $e;
